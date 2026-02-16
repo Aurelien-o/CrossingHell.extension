@@ -1,11 +1,10 @@
 # -*- coding: utf-8 -*-
-__title__ = "Dev-1"
+__title__ = "InPlace-Hunter"
 __doc__     = """Version = 1.0
-Date    = 01.01.2026
+Date    = 16.02.2026
 ________________________________________________________________
 Description:
-Placeholder for pyRevit .pushbutton.
-Use it as a base for your new pyRevit tool.
+find all In-Place Elements in the project and create an interactive report to easily Select 
 
 ________________________________________________________________
 How-To:
