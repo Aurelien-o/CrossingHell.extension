@@ -23,7 +23,7 @@ Last Updates:
 - [01.01.2026] v0.5 Change Description
 - [01.01.2026] v0.1 Change Description 
 ________________________________________________________________
-Author: Erik Frits (from LearnRevitAPI.com)"""
+Author: Aurélien Orgeur tutored by Erik Frits (from LearnRevitAPI.com)"""
 
 # ╦╔╦╗╔═╗╔═╗╦═╗╔╦╗╔═╗
 # ║║║║╠═╝║ ║╠╦╝ ║ ╚═╗
@@ -72,13 +72,14 @@ for elem in elements:
         in_place_elems.append(elem)
 
 #👉 Create a report of elements in place (créer un rapport listant les idientifiants des éléments en place)
-Print('In-Place Elements Reports')
-output.print_md('## In-Place Elements Report:')
+print('In-Place Elements Reports\nListe des éléments modélisés In Situ')
+output.print_md('## In-Place Elements Report:\nÉléments modélisés In-Situ dans le modèle:')
 output.print_md('---')
 
 for elem in in_place_elems:
-    link = output.linkify(elem.Id)  # Create Linkify (can be list of elem_ids too)
+    cat_name = 'category ' + elem.Category.Name
+    link = output.linkify(elem.Id, cat_name)  # Create Linkify (can be list of elem_ids too)
     print(link)
 
 #███████████████████████████████████████████████████████████████████████████
-# Happy Coding!
+# Thank you Erik
