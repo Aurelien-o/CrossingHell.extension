@@ -8,9 +8,9 @@ find all In-Place Elements in the project and create an interactive report to ea
 
 ________________________________________________________________
 How-To:
-1. Step 1 = get all elements
-2. Step 2 = filter In-Place Elements
-3. Step 3 = Create Interactive Report
+1. Step 1 = just click on the InPlace-Hunter button
+2. Step 2 = 
+3. Step 3 = 
 
 ________________________________________________________________
 To-Do:
@@ -39,6 +39,9 @@ import clr
 clr.AddReference('System')
 from System.Collections.Generic import List
 
+# 👉 Get pyRevit Output
+from pyrevit import script
+output = script.get_output()
 
 # ╦  ╦╔═╗╦═╗╦╔═╗╔╗ ╦  ╔═╗╔═╗
 # ╚╗╔╝╠═╣╠╦╝║╠═╣╠╩╗║  ║╣ ╚═╗
@@ -54,18 +57,28 @@ output = script.get_output()                 # pyRevit Output Menu
 # ╩ ╩╩ ╩╩╝╚╝
 #░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
 
-#👉 Get All Elements
+#👉 Get All Elements (récupérer tout les éléments)
 elements = FilteredElementCollector(doc).OfClass(FamilyInstance).ToElements()
 
 
-#👉 Get inPlace
-elem         = elements                     # Get any Element
-elem_type_id = elem.GetTypeId()             # Get Type Id (Universal)
-elem_type    = doc.GetElement(elem_type_id) # Convert ElementId to Element
-elem_family  = elem_type.Family             # Get Family
-print(elem_family.IsInPlace)                # Check IsInPlace Property
+#👉 Get inPlace Elements (filtrer les éléments placés)
+in_place_elems = []
+for elem in elements:
+    elem_type_id = elem.GetTypeId()             # Get Type Id (Universal)
+    elem_type    = doc.GetElement(elem_type_id) # Convert ElementId to Element
+    elem_family  = elem_type.Family             # Get Family
+    if elem_family.IsInPlace:               # Check IsInPlace Property
+        # print('InPlace Element;', elem.Id)
+        in_place_elems.append(elem)
 
+#👉 Create a report of elements in place (créer un rapport listant les idientifiants des éléments en place)
+Print('In-Place Elements Reports')
+output.print_md('## In-Place Elements Report:')
+output.print_md('---')
 
+for elem in in_place_elems:
+    link = output.linkify(elem.Id)  # Create Linkify (can be list of elem_ids too)
+    print(link)
 
 #███████████████████████████████████████████████████████████████████████████
 # Happy Coding!
