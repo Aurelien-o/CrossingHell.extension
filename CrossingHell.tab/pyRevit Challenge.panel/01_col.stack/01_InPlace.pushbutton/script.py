@@ -1,17 +1,16 @@
 # -*- coding: utf-8 -*-
-__title__   = "01 - InPlace Hunter"
+__title__ = "InPlace-Hunter"
 __doc__     = """Version = 1.0
-Date    = 01.01.2026
+Date    = 16.02.2026
 ________________________________________________________________
 Description:
-Placeholder for pyRevit .pushbutton.
-Use it as a base for your new pyRevit tool.
+find all In-Place Elements in the project and create an interactive report to easily Select 
 
 ________________________________________________________________
 How-To:
-1. Step 1...
-2. Step 2...
-3. Step 3...
+1. Step 1 = get all elements
+2. Step 2 = filter In-Place Elements
+3. Step 3 = Create Interactive Report
 
 ________________________________________________________________
 To-Do:
@@ -54,13 +53,17 @@ output = script.get_output()                 # pyRevit Output Menu
 # ║║║╠═╣║║║║
 # ╩ ╩╩ ╩╩╝╚╝
 #░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
-#🤖 Automate Your Boring Work Here
+
+#👉 Get All Elements
+elements = FilteredElementCollector(doc).OfClass(FamilyInstance).ToElements()
 
 
-
-#🚧 Remove This Code Example
-from reusable_code._example import default_print    # import reusable code from .../lib/reusable_code/_example.py
-default_print(btn_name=__title__)                   # Display default print message
+#👉 Get inPlace
+elem         = elements                     # Get any Element
+elem_type_id = elem.GetTypeId()             # Get Type Id (Universal)
+elem_type    = doc.GetElement(elem_type_id) # Convert ElementId to Element
+elem_family  = elem_type.Family             # Get Family
+print(elem_family.IsInPlace)                # Check IsInPlace Property
 
 
 
