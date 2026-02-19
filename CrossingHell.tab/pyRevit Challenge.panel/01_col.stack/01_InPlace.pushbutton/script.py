@@ -9,13 +9,6 @@ find all In-Place Elements in the project and create an interactive report to ea
 ________________________________________________________________
 How-To:
 1. Step 1 = just click on the InPlace-Hunter button
-2. Step 2 = 
-3. Step 3 = 
-
-________________________________________________________________
-To-Do:
-[FEATURE] - Describe Your Feature...
-[BUG]     - Describe Your BUG...
 
 ________________________________________________________________
 Last Updates:
@@ -52,34 +45,54 @@ uidoc  = __revit__.ActiveUIDocument          # __revit__ is internal variable in
 app    = __revit__.Application
 output = script.get_output()                 # pyRevit Output Menu
 
+
+# FONCTION
+#░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+#👉 Create the fonction to get all elements and filter by in place (créer la fonction permettant de sélectionner tout les éléments et filtrer ceux modélisés in situ)
+def get_in_elements():
+    #👉 Get All Elements (récupérer tout les éléments)
+    elements = FilteredElementCollector(doc).OfClass(FamilyInstance).ToElements()
+
+    #👉 Get inPlace Elements (filtrer les éléments placés)
+    in_place_elems = []
+    for elem in elements:
+        #🚨 Try/except to handle Elements without types/families
+        try:
+            elem_type_id = elem.GetTypeId()             # Get Type Id (Universal)
+            elem_type    = doc.GetElement(elem_type_id) # Convert ElementId to Element
+            elem_family  = elem_type.Family             # Get Family
+            if elem_family.IsInPlace:               # Check IsInPlace Property
+                # print('InPlace Element;', elem.Id)
+                in_place_elems.append(elem)
+        except:
+            pass
+
+    # 🚨 Check is Inplace in the project
+    if not in_place_elems:
+        forms.alert("No In-Place Elements found.Good job!!\n"
+                    "Pas de modèle In Situ dans la maquette, Bravo, Beau travail !!!!", exitscript=True)
+    return in_place_elems
+
 # ╔╦╗╔═╗╦╔╗╔
 # ║║║╠═╣║║║║
 # ╩ ╩╩ ╩╩╝╚╝
 #░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+#👉 Get in place elements
+in_place_elems = get_in_elements()
 
-#👉 Get All Elements (récupérer tout les éléments)
-elements = FilteredElementCollector(doc).OfClass(FamilyInstance).ToElements()
-
-
-#👉 Get inPlace Elements (filtrer les éléments placés)
-in_place_elems = []
-for elem in elements:
-    elem_type_id = elem.GetTypeId()             # Get Type Id (Universal)
-    elem_type    = doc.GetElement(elem_type_id) # Convert ElementId to Element
-    elem_family  = elem_type.Family             # Get Family
-    if elem_family.IsInPlace:               # Check IsInPlace Property
-        # print('InPlace Element;', elem.Id)
-        in_place_elems.append(elem)
 
 #👉 Create a report of elements in place (créer un rapport listant les idientifiants des éléments en place)
-print('In-Place Elements Reports\nListe des éléments modélisés In Situ')
 output.print_md('## In-Place Elements Report:\nÉléments modélisés In-Situ dans le modèle:')
 output.print_md('---')
 
 for elem in in_place_elems:
-    cat_name = 'category ' + elem.Category.Name
+    cat_name = 'Category ' + elem.Category.Name
     link = output.linkify(elem.Id, cat_name)  # Create Linkify (can be list of elem_ids too)
     print(link)
+
+print('Execution is finished/ Analyse terminée')
+print('There are {} In-Place Elements in the project / {} modèle(s) In-Situ trouvé(s) dans la maquette'.format(len(in_place_elems), len(in_place_elems)))
+
 
 #███████████████████████████████████████████████████████████████████████████
 # Thank you Erik
