@@ -56,6 +56,10 @@ output = script.get_output()                 # pyRevit Output Menu
 #🤖 Automate Your Boring Work Here
 
 #1️⃣ select all doors in the model/ first we test with only one door
+#0️⃣ Pick Single Object
+from Autodesk.Revit.UI.Selection import ObjectType
+ref  = uidoc.Selection.PickObject(ObjectType.Element)
+door = doc.GetElement(ref)
 
 #2️⃣get doors parameters
 
