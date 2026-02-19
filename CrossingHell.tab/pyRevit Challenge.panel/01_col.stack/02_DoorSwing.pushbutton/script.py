@@ -1,11 +1,10 @@
 # -*- coding: utf-8 -*-
 __title__   = "02 - Door Swing"
 __doc__     = """Version = 1.0
-Date    = 01.01.2026
+Date    = 19.02.2026
 ________________________________________________________________
 Description:
-Placeholder for pyRevit .pushbutton.
-Use it as a base for your new pyRevit tool.
+ Searchs Doors and write if it's mirrored or not in one of parameters.
 
 ________________________________________________________________
 How-To:
@@ -56,12 +55,15 @@ output = script.get_output()                 # pyRevit Output Menu
 #░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
 #🤖 Automate Your Boring Work Here
 
+#1️⃣ select all doors in the model/ first we test with only one door
 
+#2️⃣get doors parameters
 
-#🚧 Remove This Code Example
-from reusable_code._example import default_print    # import reusable code from .../lib/reusable_code/_example.py
-default_print(btn_name=__title__)                   # Display default print message
+#3️⃣read the parameter values
 
+#4️⃣write the parameter value
+
+#5️⃣Transmit the new value in the model's elements
 
 
 #███████████████████████████████████████████████████████████████████████████
