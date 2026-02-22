@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 __title__   = "03 - Name Swapper"
 __doc__     = """Version = 1.0
-Date    = 01.01.2026
+Date    = 22.02.2026
 ________________________________________________________________
 Description:
 Placeholder for pyRevit .pushbutton.
@@ -24,7 +24,7 @@ Last Updates:
 - [01.01.2026] v0.5 Change Description
 - [01.01.2026] v0.1 Change Description 
 ________________________________________________________________
-Author: Erik Frits (from LearnRevitAPI.com)"""
+Author: Aurélien Orgeur tutored by Erik Frits (from LearnRevitAPI.com)"""
 
 # ╦╔╦╗╔═╗╔═╗╦═╗╔╦╗╔═╗
 # ║║║║╠═╝║ ║╠╦╝ ║ ╚═╗
@@ -54,15 +54,33 @@ output = script.get_output()                 # pyRevit Output Menu
 # ║║║╠═╣║║║║
 # ╩ ╩╩ ╩╩╝╚╝
 #░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
-#🤖 Automate Your Boring Work Here
 
+#1️⃣ select views in the model
+from pyrevit import forms
 
+selected_views = forms.select_views()
 
-#🚧 Remove This Code Example
-from reusable_code._example import default_print    # import reusable code from .../lib/reusable_code/_example.py
-default_print(btn_name=__title__)                   # Display default print message
+#2️⃣ Define naming rules
+PREFIX = 'PY_'
+FIND = 'L'
+REPLACE = 'Niv'
+SUFFIX = '_END'
 
+#3️⃣ rename views
+# 🔓 Allow Changes with Revit API
+t = Transaction(doc, '03 - Name Swapper')
+t.Start()  # 🔓 Allow Changes
 
+print('Renaming views / vue(s) renommé(es)')
+print('-'*50)
+for view in selected_views:
+    old_name = view.Name
+    view.Name = PREFIX + old_name.replace(FIND, REPLACE) + SUFFIX
+
+#4️⃣ list and show the changes
+    print ('{} ➡ {}'.format(old_name, view.Name))
+
+t.Commit()  #🔒 Confirm Changes
 
 #███████████████████████████████████████████████████████████████████████████
-# Happy Coding!
+# Thanks Erik
