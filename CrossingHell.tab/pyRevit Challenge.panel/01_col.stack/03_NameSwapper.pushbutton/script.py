@@ -4,19 +4,12 @@ __doc__     = """Version = 1.0
 Date    = 22.02.2026
 ________________________________________________________________
 Description:
-Placeholder for pyRevit .pushbutton.
-Use it as a base for your new pyRevit tool.
+rename view
 
 ________________________________________________________________
 How-To:
-1. Step 1...
-2. Step 2...
-3. Step 3...
-
-________________________________________________________________
-To-Do:
-[FEATURE] - Describe Your Feature...
-[BUG]     - Describe Your BUG...
+1. Select the view(s) you want to rename
+2. Fill the prefix, find and replace, suffix you want to use
 
 ________________________________________________________________
 Last Updates:
@@ -81,26 +74,42 @@ def get_user_input():
 from pyrevit import forms
 selected_views = forms.select_views()
 
+#🚨 Ensure user has selected view(s)
+if not selected_views:
+    forms.alert('No selected views, please try again', exitscript=True)
+
 #2️⃣ Define naming rules
 user_input = get_user_input()
+
+#🚨 Ensure user input
+if not user_input:
+    forms.alert('No input to rename the views, please try again', exitscript=True)
+
 PREFIX     =  user_input['prefix']
 FIND       =  user_input['find']
 REPLACE    =  user_input['replace']
 SUFFIX     =  user_input['suffix']
-
+# 🚨 Ensure user do not use forbidden_symbols
+forbidden_symbols = "\:{}[]|; <>?`~"
+for sym in forbidden_symbols:
+    if sym in PREFIX or sym in FIND or sym in SUFFIX or sym in REPLACE:
+        forms.alert('this characters are forbidden:"\:{}[]|; <>?`~ , please try again', exitscript=True)
 #3️⃣ rename views
 # 🔓 Allow Changes with Revit API
 t = Transaction(doc, '03 - Name Swapper')
 t.Start()  # 🔓 Allow Changes
 
+
+
 print('Renaming views / vue(s) renommé(es)')
 print('-'*50)
 for view in selected_views:
     old_name = view.Name
-    view.Name = PREFIX + old_name.replace(FIND, REPLACE) + SUFFIX
+    new_name = PREFIX + old_name.replace(FIND, REPLACE) + SUFFIX
 
-#4️⃣ list and show the changes
-    print ('{} ➡ {}'.format(old_name, view.Name))
+    view.Name = new_name
+    #4️⃣ list and show the changes
+    print ('{} ➡ {}'.format(old_name, new_name))
 
 t.Commit()  #🔒 Confirm Changes
 
