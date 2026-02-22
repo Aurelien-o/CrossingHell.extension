@@ -55,26 +55,30 @@ output = script.get_output()                 # pyRevit Output Menu
 #░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
 #🤖 Automate Your Boring Work Here
 
-#1️⃣ select all doors in the model/ first we test with only one door
-#0️⃣ Pick Single Object
-from Autodesk.Revit.UI.Selection import ObjectType
-ref  = uidoc.Selection.PickObject(ObjectType.Element)
-door = doc.GetElement(ref)
 
-#2️⃣get doors swing (mirrored or not)
-print(door.Mirrored)
-value = 'Mirrored' if door.Mirrored else 'Regular'
+# #0️⃣ Pick Single Object / first we test with only one door
+# from Autodesk.Revit.UI.Selection import ObjectType
+# ref  = uidoc.Selection.PickObject(ObjectType.Element)
+# door = doc.GetElement(ref)
 
-#🔓 Allow Changes with Revit API
-t = Transaction(doc, 'Door Swing')
-t.Start()   #🔓 Allow Changes
+#1️⃣ select all doors in the model
+all_doors = FilteredElementCollector(doc).OfCategory(BuiltInCategory.OST_Doors).WhereElementIsNotElementType().ToElements()
 
-#3️⃣write the parameter value
-# Get Built-In Parameter
-param = door.get_Parameter(BuiltInParameter.ALL_MODEL_INSTANCE_COMMENTS)
-param.Set(value)
+for doors in all_doors:
+     #2️⃣get doors swing (mirrored or not)
+    print(door.Mirrored)
+    value = 'Mirrored' if door.Mirrored else 'Regular'
 
-t.Commit()  #🔒 Confirm Changes
+    #🔓 Allow Changes with Revit API
+    t = Transaction(doc, 'Door Swing')
+    t.Start()   #🔓 Allow Changes
+
+    #3️⃣write the parameter value to comment's parameter
+    # Get Built-In Parameter
+    param = door.get_Parameter(BuiltInParameter.ALL_MODEL_INSTANCE_COMMENTS)
+    param.Set(value)
+
+    t.Commit()  #🔒 Confirm Changes
 
 
 
