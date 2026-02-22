@@ -61,13 +61,21 @@ from Autodesk.Revit.UI.Selection import ObjectType
 ref  = uidoc.Selection.PickObject(ObjectType.Element)
 door = doc.GetElement(ref)
 
-#2️⃣get doors parameters
+#2️⃣get doors swing (mirrored or not)
+print(door.Mirrored)
+value = 'Mirrored' if door.Mirrored else 'Regular'
 
-#3️⃣read the parameter values
+#🔓 Allow Changes with Revit API
+t = Transaction(doc, 'Door Swing')
+t.Start()   #🔓 Allow Changes
 
-#4️⃣write the parameter value
+#3️⃣write the parameter value
+# Get Built-In Parameter
+param = door.get_Parameter(BuiltInParameter.ALL_MODEL_INSTANCE_COMMENTS)
+param.Set(value)
 
-#5️⃣Transmit the new value in the model's elements
+t.Commit()  #🔒 Confirm Changes
+
 
 
 #███████████████████████████████████████████████████████████████████████████
