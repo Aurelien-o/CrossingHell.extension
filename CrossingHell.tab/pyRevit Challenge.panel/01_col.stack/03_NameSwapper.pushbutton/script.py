@@ -107,9 +107,20 @@ for view in selected_views:
     old_name = view.Name
     new_name = PREFIX + old_name.replace(FIND, REPLACE) + SUFFIX
 
+    #🚨 Ensure to use unique view name
+    if new_name != old_name:
+        for i in range(20):
+            try:
+                view.Name = new_name
+                break
+            except:
+                new_name += '*'
+
     view.Name = new_name
     #4️⃣ list and show the changes
-    print ('{} ➡ {}'.format(old_name, new_name))
+    # Create Linkify Button
+    link_new_name = output.linkify(view.Id, view.Name)
+    print ('{} ➡ {}'.format(old_name, link_new_name))
 
 t.Commit()  #🔒 Confirm Changes
 
