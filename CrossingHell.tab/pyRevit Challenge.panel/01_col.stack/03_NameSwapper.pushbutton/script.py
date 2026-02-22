@@ -50,6 +50,28 @@ uidoc  = __revit__.ActiveUIDocument          # __revit__ is internal variable in
 app    = __revit__.Application
 output = script.get_output()                 # pyRevit Output Menu
 
+# ╔═╗╦ ╦╔╗╔╔═╗╔╦╗╦╔═╗╔╗╔
+# ╠╣ ║ ║║║║║   ║ ║║ ║║║║
+# ╚  ╚═╝╝╚╝╚═╝ ╩ ╩╚═╝╝╚╝
+#░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+
+def get_user_input():
+    #function to get input's user with rpw.ui.forms.FlexForm
+    from rpw.ui.forms import (FlexForm, Label, ComboBox, TextBox,
+                              Separator, Button, CheckBox)
+    components = [
+        Label('Prefix:'), TextBox('prefix'),
+        Label('Find:'), TextBox('find'),
+        Label('Replace:'), TextBox('replace'),
+        Label('Suffix:'), TextBox('suffix'),
+        Separator(),
+        Button('Select')]
+    form = FlexForm('Name Swapper', components)
+    form.show()
+
+    return form.values
+
+
 # ╔╦╗╔═╗╦╔╗╔
 # ║║║╠═╣║║║║
 # ╩ ╩╩ ╩╩╝╚╝
@@ -57,14 +79,14 @@ output = script.get_output()                 # pyRevit Output Menu
 
 #1️⃣ select views in the model
 from pyrevit import forms
-
 selected_views = forms.select_views()
 
 #2️⃣ Define naming rules
-PREFIX = 'PY_'
-FIND = 'L'
-REPLACE = 'Niv'
-SUFFIX = '_END'
+user_input = get_user_input()
+PREFIX     =  user_input['prefix']
+FIND       =  user_input['find']
+REPLACE    =  user_input['replace']
+SUFFIX     =  user_input['suffix']
 
 #3️⃣ rename views
 # 🔓 Allow Changes with Revit API
@@ -82,5 +104,5 @@ for view in selected_views:
 
 t.Commit()  #🔒 Confirm Changes
 
-#███████████████████████████████████████████████████████████████████████████
-# Thanks Erik
+# #███████████████████████████████████████████████████████████████████████████
+# # Thanks Erik
