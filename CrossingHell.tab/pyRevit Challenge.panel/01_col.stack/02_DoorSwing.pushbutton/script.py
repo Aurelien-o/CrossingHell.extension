@@ -63,22 +63,26 @@ output = script.get_output()                 # pyRevit Output Menu
 
 #1️⃣ select all doors in the model
 all_doors = FilteredElementCollector(doc).OfCategory(BuiltInCategory.OST_Doors).WhereElementIsNotElementType().ToElements()
+# 🔓 Allow Changes with Revit API
+t = Transaction(doc, 'Door Swing')
+t.Start()  # 🔓 Allow Changes
 
-for doors in all_doors:
-     #2️⃣get doors swing (mirrored or not)
-    print(door.Mirrored)
+for door in all_doors:
+    #2️⃣get doors swing (mirrored or not)
     value = 'Mirrored' if door.Mirrored else 'Regular'
 
-    #🔓 Allow Changes with Revit API
-    t = Transaction(doc, 'Door Swing')
-    t.Start()   #🔓 Allow Changes
+    #if door.GroupId == ElementId.InvalidElementId: (i'd like to write the parameter even for doors in groups)
 
     #3️⃣write the parameter value to comment's parameter
-    # Get Built-In Parameter
-    param = door.get_Parameter(BuiltInParameter.ALL_MODEL_INSTANCE_COMMENTS)
-    param.Set(value)
+    # Get Project/Shared Parameter
+    param = door.LookupParameter('Py_Door_Swing')
+    #🚨 gives a warning message in case the parameter does not exist
+    if param and not param.IsReadOnly:
+        param.Set(value)
+    else:
+        forms.alert('Py_Door_Swing parameter is missing', exitscript=True)
 
-    t.Commit()  #🔒 Confirm Changes
+t.Commit()  #🔒 Confirm Changes
 
 
 
