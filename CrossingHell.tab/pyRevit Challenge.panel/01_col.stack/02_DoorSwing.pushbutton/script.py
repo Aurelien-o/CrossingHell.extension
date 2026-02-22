@@ -4,18 +4,13 @@ __doc__     = """Version = 1.0
 Date    = 19.02.2026
 ________________________________________________________________
 Description:
- Searchs Doors and write if it's mirrored or not in one of parameters.
+ Searchs Doors and write if it's mirrored or not in a project parameter called 'Py_Door_Swing'.
 
 ________________________________________________________________
 How-To:
-1. Step 1...
-2. Step 2...
-3. Step 3...
+1. the project parameter 'Py_Door_Swing must be created
+2. click on the button 02 - Door Swing
 
-________________________________________________________________
-To-Do:
-[FEATURE] - Describe Your Feature...
-[BUG]     - Describe Your BUG...
 
 ________________________________________________________________
 Last Updates:
@@ -23,7 +18,7 @@ Last Updates:
 - [01.01.2026] v0.5 Change Description
 - [01.01.2026] v0.1 Change Description 
 ________________________________________________________________
-Author: Erik Frits (from LearnRevitAPI.com)"""
+Author: Aurélien Orgeur tutored by Erik Frits (from LearnRevitAPI.com)"""
 
 # ╦╔╦╗╔═╗╔═╗╦═╗╔╦╗╔═╗
 # ║║║║╠═╝║ ║╠╦╝ ║ ╚═╗
@@ -53,9 +48,6 @@ output = script.get_output()                 # pyRevit Output Menu
 # ║║║╠═╣║║║║
 # ╩ ╩╩ ╩╩╝╚╝
 #░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
-#🤖 Automate Your Boring Work Here
-
-
 # #0️⃣ Pick Single Object / first we test with only one door
 # from Autodesk.Revit.UI.Selection import ObjectType
 # ref  = uidoc.Selection.PickObject(ObjectType.Element)
@@ -87,4 +79,4 @@ t.Commit()  #🔒 Confirm Changes
 
 
 #███████████████████████████████████████████████████████████████████████████
-# Happy Coding!
+# Thanks Erik!
